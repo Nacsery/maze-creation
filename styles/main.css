@@ -11,7 +11,7 @@ html {
 body {
     height: inherit;
     display: block;
-    background-color: aqua;
+    background-color: darkslategrey;
     overflow: scroll;
 }
 
