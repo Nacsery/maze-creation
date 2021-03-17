@@ -20,9 +20,9 @@ body {
 canvas {
     margin: auto;
     margin-top: 5em;
-    width: 80%;
-    height: 80%;
+    width: 65%;
+    height: 65%;
     block-size: auto;
-    padding: 1%;
+    padding: 3%;
     display: block;
 }

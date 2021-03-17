@@ -17,6 +17,9 @@ const mazeColumn = (width / size) - 1;
 //maze array
 let maze = [];
 
+//speed of iteration
+let speed = 15;
+
 //moving red block
 let movingBlock = new Block(0, 0, 'black', size);
 
@@ -150,7 +153,7 @@ async function randomizedDFS(x, y) {
         movingBlock.deleteInner();
         movingBlock.update(x * size, y * size);
         movingBlock.drawInner();
-        await timer(0.5);
+        await timer(speed);
         maze[y][x].removeWall(nextBlock[2]);
         await randomizedDFS(nextBlock[0], nextBlock[1]);
         nextBlock = await randomUnvisitedNeighbor(x, y);
