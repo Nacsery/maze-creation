@@ -43,7 +43,7 @@ Block.prototype.draw = function () {
 //Deletes the inner square
 Block.prototype.deleteInner = function () {
     ctx.beginPath();
-    ctx.fillStyle = 'white';
+    ctx.fillStyle = 'grey';
     ctx.rect(this.x + 1, this.y + 1, this.size - 2, this.size - 2);
     ctx.fill();
 }
@@ -71,7 +71,7 @@ Block.prototype.update = function (x, y) {
 //Removes the Wall from given direction
 Block.prototype.removeWall = function (direction) {
     ctx.beginPath();
-    ctx.fillStyle = 'white';
+    ctx.fillStyle = 'grey';
     let size = this.size - 2;
     switch (direction) {
         case 'up':
@@ -147,14 +147,16 @@ async function randomizedDFS(x, y) {
     maze[y][x].visited = true;
     let nextBlock = await randomUnvisitedNeighbor(x, y);
     while (nextBlock != undefined) {
-        await movingBlock.deleteInner();
+        movingBlock.deleteInner();
         movingBlock.update(x * size, y * size);
         movingBlock.drawInner();
         await timer(0.5);
-        await maze[y][x].removeWall(nextBlock[2]);
+        maze[y][x].removeWall(nextBlock[2]);
         await randomizedDFS(nextBlock[0], nextBlock[1]);
         nextBlock = await randomUnvisitedNeighbor(x, y);
     }
+    //paint the last bits grey
+    maze[y][x].deleteInner();
     movingBlock.deleteInner();
 }
 
