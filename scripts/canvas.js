@@ -122,8 +122,8 @@ async function randomizedDFS(x, y) {
         await movingBlock.deleteInner();
         
         movingBlock.update(x*30,y*30);
-        await movingBlock.drawInner();
-        await timer(50);
+        movingBlock.drawInner();
+        await timer(20);
         await maze[y][x].removeWall(nextBlock[2]);
         await randomizedDFS(nextBlock[0], nextBlock[1]);
         nextBlock = await randomUnvisitedNeighbor(x, y);
