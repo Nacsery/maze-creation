@@ -2,11 +2,11 @@ const canvas = document.querySelector('canvas');
 const ctx = canvas.getContext('2d');
 const bg_colour = window.getComputedStyle(document.querySelector('body')).backgroundColor
 const width = canvas.width = 1920;
-const height = canvas.height = 1080;
+const height = canvas.height = width*9/16;
 const mazeRow = (height / 30) - 1;
 const mazeColumn = (width / 30) - 1;
 let maze = [];
-
+let movingBlock = new Block(0, 0, 'black', 30);
 function random(min, max) {
     const num = Math.floor(Math.random() * (max - min + 1)) + min;
     return num;
@@ -31,10 +31,16 @@ Block.prototype.draw = function () {
     ctx.rect(this.x + 1, this.y + 1, this.size - 2, this.size - 2);
     ctx.fill();
 }
-Block.prototype.drawMoving = function () {
+Block.prototype.deleteInner = function () {
     ctx.beginPath();
-    ctx.fillStyle = this.color;
-    ctx.rect(this.x, this.y, this.size, this.size);
+    ctx.fillStyle = 'white';
+    ctx.rect(this.x + 1, this.y + 1, this.size - 2, this.size - 2);
+    ctx.fill();
+}
+Block.prototype.drawInner = function () {
+    ctx.beginPath();
+    ctx.fillStyle = 'red';
+    ctx.rect(this.x + 2, this.y + 2, this.size - 4, this.size - 4);
     ctx.fill();
 }
 
@@ -92,9 +98,9 @@ function unvisitedNeighbors(x, y) {
 function createGrid() {
     let size = 30;
     let block;
-    for (let i = 0; i < height; i += 30) {
+    for (let i = 0; i < height; i += size) {
         let row = []
-        for (let j = 0; j < width; j += 30) {
+        for (let j = 0; j < width; j += size) {
             block = new Block(j, i, 'black', size);
             row.push(block);
             block.draw();
@@ -102,24 +108,29 @@ function createGrid() {
         maze.push(row);
     }
 }
-
-function randomUnvisitedNeighbor(x, y) {
+const timer = ms => new Promise(res => setTimeout(res, ms))
+async function randomUnvisitedNeighbor(x, y) {
     let neighbors = unvisitedNeighbors(x, y);
     let randomNeighbor = neighbors[Math.floor(Math.random() * neighbors.length)];
     return randomNeighbor;
 }
 
-function randomizedDFS(x, y) {
+async function randomizedDFS(x, y) {
     maze[y][x].visited = true;
-    let nextBlock = randomUnvisitedNeighbor(x, y);
+    let nextBlock = await randomUnvisitedNeighbor(x, y);
     while (nextBlock != undefined) {
-        maze[y][x].removeWall(nextBlock[2]);
-        randomizedDFS(nextBlock[0], nextBlock[1]);
-        nextBlock = randomUnvisitedNeighbor(x, y);
+        await movingBlock.deleteInner();
+        
+        movingBlock.update(x*30,y*30);
+        await movingBlock.drawInner();
+        await timer(50);
+        await maze[y][x].removeWall(nextBlock[2]);
+        await randomizedDFS(nextBlock[0], nextBlock[1]);
+        nextBlock = await randomUnvisitedNeighbor(x, y);
     }
 }
 
-function createMaze() { 
+function createMaze() {
     randomizedDFS(0, 0);
 }
 
