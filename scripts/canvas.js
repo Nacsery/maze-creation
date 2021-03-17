@@ -150,16 +150,17 @@ async function randomizedDFS(x, y) {
     maze[y][x].visited = true;
     let nextBlock = await randomUnvisitedNeighbor(x, y);
     while (nextBlock != undefined) {
+        //github pages let red flakes sometimes without await.
         movingBlock.deleteInner();
         movingBlock.update(x * size, y * size);
         movingBlock.drawInner();
         await timer(speed);
-        maze[y][x].removeWall(nextBlock[2]);
+        await maze[y][x].removeWall(nextBlock[2]);
         await randomizedDFS(nextBlock[0], nextBlock[1]);
         nextBlock = await randomUnvisitedNeighbor(x, y);
     }
     //paint the last bits grey
-    maze[y][x].deleteInner();
+    await maze[y][x].deleteInner();
     movingBlock.deleteInner();
 }
 
