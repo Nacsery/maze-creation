@@ -1,24 +1,51 @@
 //Author Burak Keser
 
-import { Block, canvas } from './block.js';
+import { Block } from './block.js';
+
+const canvas = document.querySelector('canvas');
+export const ctx = canvas.getContext('2d');
 
 export let width = canvas.width = 1920;
 export let height = canvas.height = 9 * width / 16;
 
-export let size = 0.015625 * width;
+let temp_size = 1;
+export let size = 0.015625 * width * temp_size;
 export let gridRow = (height / size) - 1;
 export let girdColumn = (width / size) - 1;
+
+
+document.getElementById('current-size').innerHTML = document.getElementById('size').value;
+let sizeInput = document.getElementById('size');
+
+//changes the speed of iteration and string near the range input
+sizeInput.oninput = () => {
+    switch (Number(document.getElementById('size').value)){
+        case 1:
+            temp_size = 0.5;
+            break;
+        case 2:
+            temp_size = 1;
+            break;
+        case 3:
+            temp_size = 2;
+            break;
+    }
+    size = 0.015625 * width * temp_size
+    document.getElementById('current-size').innerHTML = document.getElementById('size').value;
+}
 
 export let grid = [];
 
 //Creates a grid
 export function clearGrid() {
+    grid = [];
     for (let i = 0; i < height; i += size) {
         let row = []
         for (let j = 0; j < width; j += size) {
             let block = new Block(j, i, 'black', size);
             row.push(block);
-            block.draw();
+            block.drawOuter();
+            block.drawInner('white', 1, 2);
         }
         grid.push(row);
     }

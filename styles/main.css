@@ -9,6 +9,7 @@ html {
 }
 
 body {
+    margin-top: 5em;
     height: inherit;
     width: inherit;
     display: block;
@@ -16,12 +17,48 @@ body {
     overflow: hidden;
 }
 
-canvas {
+.content {
+    display: flex;
+    flex-direction: column;
     margin: auto;
-    margin-top: 5em;
+}
+
+canvas {
+    display: block;
+    margin: auto;
+    margin-top: 1em;
     width: 65%;
     height: 65%;
     block-size: auto;
     padding: 3%;
+}
+
+.inputs {
+    width: 65%;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    margin: auto;
+}
+
+.speed-range, .size-range {
     display: block;
+    margin: 1em;
+}
+
+.buttons {
+    display: flex;
+    margin: 1em;
+}
+
+#reset-button, #stop-start {
+    font-size: 1em auto;
+}
+
+#speed-label, #size-label {
+    margin-right: 0.5em;
+}
+
+#current-speed {
+    margin-left: 0.5em;
 }

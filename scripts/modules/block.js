@@ -1,8 +1,7 @@
 //Author Burak Keser
+import { ctx } from './grid.js';
+export { Block };
 
-export { Block, canvas };
-const canvas = document.querySelector('canvas');
-const ctx = canvas.getContext('2d');
 
 //Block object for the grid
 function Block(x, y, color, size) {
@@ -14,7 +13,7 @@ function Block(x, y, color, size) {
 }
 
 //Draws an empty square for grid
-Block.prototype.draw = function () {
+Block.prototype.drawOuter = function () {
     ctx.beginPath();
     ctx.fillStyle = this.color;
     ctx.rect(this.x, this.y, this.size, this.size);
@@ -24,21 +23,14 @@ Block.prototype.draw = function () {
     ctx.rect(this.x + 1, this.y + 1, this.size - 2, this.size - 2);
     ctx.fill();
 }
-//Deletes the inner square
-Block.prototype.deleteInner = function () {
+//Draw the inner square
+Block.prototype.drawInner = function (color, c, z) {
     ctx.beginPath();
-    ctx.fillStyle = 'grey';
-    ctx.rect(this.x + 1, this.y + 1, this.size - 2, this.size - 2);
+    ctx.fillStyle = color;
+    ctx.rect(this.x + c, this.y + c, this.size - z, this.size - z);
     ctx.fill();
 }
-//Draws an inner square
-//used by moving node
-Block.prototype.drawInner = function () {
-    ctx.beginPath();
-    ctx.fillStyle = 'red';
-    ctx.rect(this.x + 1, this.y + 1, this.size - 2, this.size - 2);
-    ctx.fill();
-}
+
 //Deletion of the node from Screen
 Block.prototype.delete = function () {
     ctx.beginPath();
