@@ -35,6 +35,7 @@ sizeInput.oninput = () => {
     size = 0.015625 * width * temp_size
     gridRow = (height / size) - 1
     girdColumn = (width / size) - 1
+    clearGrid();
     document.getElementById('current-size').innerHTML = document.getElementById('size').value;
     }
 }
