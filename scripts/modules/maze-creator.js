@@ -3,7 +3,7 @@
 import { Block } from './block.js';
 import { grid as maze, size, unvisitedNeighbors, clearGrid, grid } from './grid.js';
 //moving red block
-let movingBlock = new Block(0, 0, 'black', size);
+let movingBlock;
 
 //speed of iteration
 let speed = 25;
@@ -16,7 +16,7 @@ speedInput.oninput = () => {
     document.getElementById('current-speed').innerHTML = document.getElementById('speed').value;
 }
 
-let executionStatus = true;
+export let executionStatus = true;
 let stopStart = document.getElementById('stop-start');
 const timer = ms => new Promise(res => setTimeout(res, ms))
 let firstStart = true
@@ -44,7 +44,6 @@ let clear = document.getElementById('reset-button');
 clear.onclick = () => {
     if (reset) {
         clearGrid();
-        movingBlock = new Block(0, 0, 'black', size);
     }
 }
 
@@ -89,6 +88,7 @@ async function randomizedDFS(x, y) {
 export async function createMaze() {
     reset = false;
     clear.style.background = 'grey';
+    movingBlock = new Block(0, 0, 'black', size)
     await randomizedDFS(0, 0);
     executionStatus = true;
     firstStart = true;

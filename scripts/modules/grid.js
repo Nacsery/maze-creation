@@ -1,6 +1,7 @@
 //Author Burak Keser
 
 import { Block } from './block.js';
+import { executionStatus} from './maze-creator.js';
 
 const canvas = document.querySelector('canvas');
 export const ctx = canvas.getContext('2d');
@@ -19,6 +20,7 @@ let sizeInput = document.getElementById('size');
 
 //changes the speed of iteration and string near the range input
 sizeInput.oninput = () => {
+    if(executionStatus){
     switch (Number(document.getElementById('size').value)){
         case 1:
             temp_size = 0.5;
@@ -34,6 +36,7 @@ sizeInput.oninput = () => {
     gridRow = (height / size) - 1
     girdColumn = (width / size) - 1
     document.getElementById('current-size').innerHTML = document.getElementById('size').value;
+    }
 }
 
 export let grid = [];
