@@ -3,22 +3,27 @@
 import { Block } from './block.js';
 import { executionStatus} from './maze-creator.js';
 
+
 const canvas = document.querySelector('canvas');
 export const ctx = canvas.getContext('2d');
 
 export let width = canvas.width = 1920;
 export let height = canvas.height = 9 * width / 16;
-
+//size factor for changing size
 let temp_size = 1;
+
+//Block size
 export let size = 0.015625 * width * temp_size;
+
+//Proportioned array limits of the canvas according to block size
 export let gridRow = (height / size) - 1;
 export let girdColumn = (width / size) - 1;
 
-
+//gets size range element
 document.getElementById('current-size').innerHTML = document.getElementById('size').value;
 let sizeInput = document.getElementById('size');
 
-//changes the speed of iteration and string near the range input
+//changes the size of blocks and string near the range input of size
 sizeInput.oninput = () => {
     if(executionStatus){
     switch (Number(document.getElementById('size').value)){
@@ -40,6 +45,7 @@ sizeInput.oninput = () => {
     }
 }
 
+//simulated grid
 export let grid = [];
 
 //Creates a grid

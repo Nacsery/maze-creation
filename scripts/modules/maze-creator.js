@@ -15,10 +15,14 @@ speedInput.oninput = () => {
     speed = (Number(document.getElementById('speed').value) - 100) * -1;
     document.getElementById('current-speed').innerHTML = document.getElementById('speed').value;
 }
-
+//if it can be started it executionStatus is true
 export let executionStatus = true;
 let stopStart = document.getElementById('stop-start');
+
+//Promise for animation
 const timer = ms => new Promise(res => setTimeout(res, ms))
+
+
 let firstStart = true
 //start and stop functionality for maze
 stopStart.onclick = () => {
@@ -39,6 +43,8 @@ stopStart.onclick = () => {
     }
 }
 
+//Reset functionality
+//Can be done after simulation ended
 let reset = true;
 let clear = document.getElementById('reset-button');
 clear.onclick = () => {
