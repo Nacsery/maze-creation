@@ -18,12 +18,22 @@
         <div class="stop-start">
           <input type="button" id="stop-start" value="Start">
         </div>
+        <div class="multi-block-grid">
+          <input type="button" id="multi-block" value="Block Grid">
+        </div>
       </div>
 
       <div class="size-range">
-        <label id="size-label">size</label>
-        <input type="range" id="size" value="3" max="5" min="1">
-        <label id="current-size"></label>
+        <div class="width-range">
+          <label id="width-label">width</label>
+          <input type="range" id="width" value="80" max="100" min="8">
+          <label id="current-width"></label>
+        </div>
+        <div class="height-range">
+          <label id="height-label">height</label>
+          <input type="range" id="height" value="45" max="100" min="8">
+          <label id="current-height"></label>
+        </div>
       </div>
 
       <div class="speed-range">
@@ -36,7 +46,7 @@
   </div>
 
 
-  <script type="module" src="scripts/main.js"></script>
+  <script type="module" src="./scripts/grid-handler.js"></script>
 </body>
 
 </html>

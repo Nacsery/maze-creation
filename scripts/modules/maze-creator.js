@@ -1,63 +1,44 @@
 //Author Burak Keser
+export function MazeCreator() {
+    //moving red block
 
-import { Block } from './block.js';
-import { grid as maze, blockSize, unvisitedNeighbors, newGrid, grid } from './grid.js';
-//moving red block
-let movingBlock;
-
-//speed of iteration
-let speed = 25;
-document.getElementById('current-speed').innerHTML = 75;
-let speedInput = document.getElementById('speed');
-
-//changes the speed of iteration and string near the range input
-speedInput.oninput = () => {
-    speed = (Number(document.getElementById('speed').value) - 100) * -1;
-    document.getElementById('current-speed').innerHTML = document.getElementById('speed').value;
+    this.speed = 25;
+    this.executionStatus = true;
+    this.reset = false;
+    //Promise for animation
+    this.timer = ms => new Promise(res => setTimeout(res, ms))
+    this.isReset = false;//Control for reset after procedure done
 }
-//if it can be started it executionStatus is true
-export let executionStatus = true;
-let stopStart = document.getElementById('stop-start');
 
-//Promise for animation
-const timer = ms => new Promise(res => setTimeout(res, ms))
+//Finds the unvisited neighbor of the given node
+const unvisitedNeighbors = function (x, y, c, grid) {
 
-
-let firstStart = true
-//start and stop functionality for maze
-stopStart.onclick = () => {
-    if (firstStart) {
-        executionStatus = false;
-        stopStart.value = 'Stop';
-        createMaze()
-        firstStart = false;
-    } else {
-        if (executionStatus == true) {
-            executionStatus = false;
-            stopStart.value = 'Stop';
-
-        } else {
-            executionStatus = true;
-            stopStart.value = 'Start';
-        }
+    let gridRow = grid.length - 1;;
+    let girdColumn = grid[0].length - 1;
+    let unvisitedNeighbors = [];
+    //Before the rightmost node and not visited before
+    if (x < girdColumn && !grid[y][x + c].visited) {
+        unvisitedNeighbors.push([x + c, y, 'right']);
     }
-}
-
-//Reset functionality
-//Can be done after simulation ended
-let reset = true;
-let clear = document.getElementById('reset-button');
-clear.onclick = () => {
-    if (reset) {
-        newGrid();
+    //Before the lowermost node and not visited before
+    if (y < gridRow && !grid[y + c][x].visited) {
+        unvisitedNeighbors.push([x, y + c, 'down']);
     }
+    //before the leftmost node and not visited before
+    if (x > 0 && !grid[y][x - c].visited) {
+        unvisitedNeighbors.push([x - c, y, 'left']);
+    }
+    //before the upmost node and not visited before
+    if (y > 0 && !grid[y - c][x].visited) {
+        unvisitedNeighbors.push([x, y - c, 'up']);
+    }
+    return unvisitedNeighbors;
 }
-
-
 
 //Returns random neighbor from unvisited neighbor array
-async function randomUnvisitedNeighbor(x, y) {
-    let neighbors = unvisitedNeighbors(x, y, 1, 1);
+const randomUnvisitedNeighbor = async function (x, y, grid) {
+
+    let neighbors = unvisitedNeighbors(x, y, 1, grid);
     let randomNeighbor = neighbors[Math.floor(Math.random() * neighbors.length)];
     return randomNeighbor;
 }
@@ -66,39 +47,44 @@ async function randomUnvisitedNeighbor(x, y) {
 //Recursively go down on a random path on the nodes
 //After encountering a node with surrounding nodes visited go up on the recursion
 //While travelling unblock the wall between the nodes
-//displays the current node with moving red block
-async function randomizedDFS(x, y) {
-    maze[y][x].visited = true;
-    let nextBlock = await randomUnvisitedNeighbor(x, y);
-    while (nextBlock != undefined) {
+MazeCreator.prototype.randomizedDFS = async function (x, y, grid) {
+    if (this.reset == true) {
+        this.isReset = true;
+        return;
+    }
+    grid[y][x].visited = true;
+    let nextBlock = await randomUnvisitedNeighbor(x, y, grid);
+    while (nextBlock != undefined && !this.reset) {
         //github pages let red flakes sometimes without await.
-        movingBlock.drawInner('grey', 1, 2);
-        movingBlock.update(x * blockSize, y * blockSize);
-        movingBlock.drawInner('grey', 1, 2);
-        movingBlock.drawInner('red', 4, 8);
-        while (executionStatus) {
-            await timer(1);
+        grid[y][x].drawInner('grey', 1, 2);
+        while (this.executionStatus) {
+            await this.timer(1);
         }
-        await timer(speed);
-        await maze[y][x].removeWall(nextBlock[2]);
-        await randomizedDFS(nextBlock[0], nextBlock[1]);
-        nextBlock = await randomUnvisitedNeighbor(x, y);
+        await this.timer(this.speed);
+        await grid[y][x].removeWall(nextBlock[2]);
+        await this.randomizedDFS(nextBlock[0], nextBlock[1], grid);
+        nextBlock = await randomUnvisitedNeighbor(x, y, grid);
 
     }
     //paint the last bits grey
-    await maze[y][x].drawInner('grey', 1, 2);
-    movingBlock.drawInner('grey', 1, 2);
+    grid[y][x].drawInner('grey', 1, 2);x
 }
 
 //wrapper function for maze creation
-export async function createMaze() {
-    reset = false;
-    clear.style.background = 'grey';
-    movingBlock = new Block(0, 0, 'black', blockSize)
-    await randomizedDFS(0, 0);
-    executionStatus = true;
-    firstStart = true;
-    stopStart.value = 'Start';
-    clear.style.background = 'white';
-    reset = true;
+MazeCreator.prototype.createMaze = async function (grid) {
+    await this.randomizedDFS(0, 0, grid);
+    this.reset = false;
+}
+
+MazeCreator.prototype.start = function () {
+    this.executionStatus = false;
+}
+
+MazeCreator.prototype.stop = function () {
+    this.executionStatus = true;
+}
+
+MazeCreator.prototype.restart = function () {
+    this.reset = true;
+    this.executionStatus = true;
 }

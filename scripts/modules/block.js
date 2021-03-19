@@ -1,10 +1,10 @@
 //Author Burak Keser
-import { ctx } from './grid.js';
+import { ctx } from '../grid-handler.js';
 export { Block };
 
 
 //Block object for the grid
-function Block(x, y, color, size) {
+function Block(x, y, color, size, ctx) {
     this.x = x;
     this.y = y;
     this.color = color;
@@ -54,13 +54,13 @@ Block.prototype.removeWall = function (direction) {
             ctx.rect(this.x + 1, this.y - 4, temp, temp);
             break;
         case 'down':
-            ctx.rect(this.x + 1, this.y +4, temp, temp);
+            ctx.rect(this.x + 1, this.y + 4, temp, temp);
             break;
         case 'left':
-            ctx.rect(this.x - 4, this.y +1, temp, temp);
+            ctx.rect(this.x - 4, this.y + 1, temp, temp);
             break;
         case 'right':
-            ctx.rect(this.x + 4, this.y +1, temp, temp);
+            ctx.rect(this.x + 4, this.y + 1, temp, temp);
             break;
 
     }

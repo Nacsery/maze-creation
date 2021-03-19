@@ -13,8 +13,8 @@ body {
     height: inherit;
     width: inherit;
     display: block;
-    background-color: darkslategrey;
-    overflow: hidden;
+    background-color: black;
+    overflow: auto;
 }
 
 .content {
@@ -27,31 +27,35 @@ canvas {
     display: block;
     margin: auto;
     margin-top: 1em;
-    width: 80%;
-    height: 80%;
+    width: 65%;
+    height: 65%;
     block-size: auto;
     padding: 3%;
 }
 
 .inputs {
+    color: white;
     width: 65%;
+    height: 65%;
     position: relative;
     display: flex;
     flex-direction: row;
     margin: auto;
+    block-size: auto;
 }
 
 .speed-range, .size-range {
     display: block;
-    margin: 1em;
+    margin: 0.5em;
+    flex-direction: row;
 }
 
 .buttons {
     display: flex;
-    margin: 1em;
+    margin: 0.5em;
 }
 
-#reset-button, #stop-start {
+#reset-button, #stop-start, #multi-block {
     font-size: 1em auto;
 }
 
@@ -59,6 +63,6 @@ canvas {
     margin-right: 0.5em;
 }
 
-#current-speed {
+#current-speed, #current-size {
     margin-left: 0.5em;
 }
