@@ -3,8 +3,8 @@
 import { GridMaker } from './modules/grid-maker.js';
 import { MazeCreator } from './modules/maze-creator.js';
 
-export let canvas = document.querySelector('canvas');
-export let ctx = canvas.getContext('2d');
+let canvas = document.querySelector('canvas');
+let ctx = canvas.getContext('2d');
 
 let gridMaker = new GridMaker(30);
 let mazeCreator = new MazeCreator();

@@ -1,5 +1,4 @@
 //Author Burak Keser
-import { canvas } from '../grid-handler.js';
 import { Block } from './block.js';
 
 export function GridMaker() {
@@ -7,8 +6,9 @@ export function GridMaker() {
     this.blockSize = 30;
     this.widthFactor = 80;
     this.heightFactor = 45;
-    this.width = canvas.width = this.blockSize * this.widthFactor;
-    this.height = canvas.height = this.blockSize * this.heightFactor;
+    this.canvas =  document.querySelector('canvas');
+    this.width = this.canvas.width = this.blockSize * this.widthFactor;
+    this.height = this.canvas.height = this.blockSize * this.heightFactor;
     this.gridRow = (this.height / this.blockSize) - 1;
     this.girdColumn = (this.width / this.blockSize) - 1;
 }
