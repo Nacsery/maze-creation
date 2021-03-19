@@ -1,6 +1,7 @@
 //Author Burak Keser
 
-import { clearGrid } from './modules/grid.js';
-import { createMaze } from './modules/maze-creator.js';
+import { newGrid , grid} from './modules/grid.js';
+import { createMaze } from './modules/path-finding-wall.js';
+import { MultiBlock } from './modules/multiple-block.js';
 
-clearGrid();
+newGrid();

@@ -48,19 +48,19 @@ Block.prototype.update = function (x, y) {
 Block.prototype.removeWall = function (direction) {
     ctx.beginPath();
     ctx.fillStyle = 'grey';
-    let size = this.size - 2;
+    let temp = this.size - 2;
     switch (direction) {
         case 'up':
-            ctx.rect(this.x + 1, this.y - 2, size, size);
+            ctx.rect(this.x + 1, this.y - 4, temp, temp);
             break;
         case 'down':
-            ctx.rect(this.x + 1, this.y + 3, size, size);
+            ctx.rect(this.x + 1, this.y +4, temp, temp);
             break;
         case 'left':
-            ctx.rect(this.x - 2, this.y + 1, size, size);
+            ctx.rect(this.x - 4, this.y +1, temp, temp);
             break;
         case 'right':
-            ctx.rect(this.x + 3, this.y + 1, size, size);
+            ctx.rect(this.x + 4, this.y +1, temp, temp);
             break;
 
     }
