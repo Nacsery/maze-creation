@@ -1,9 +1,7 @@
 //Author Burak Keser
-export { Block };
-
 
 //Block object for the grid
-function Block(x, y, color, size, ) {
+export function Block(x, y, color, size, ) {
     this.x = x;
     this.y = y;
     this.color = color;

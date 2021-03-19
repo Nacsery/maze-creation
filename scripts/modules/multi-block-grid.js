@@ -1,8 +1,8 @@
+//Author Burak Keser
 import { gridRow, girdColumn, newGrid } from './grid-maker.js';
 import { MultiBlock } from './multiple-block.js';
 
 //Multi Block size, represents edge size of multi block
-
 export let multiBlockSize = 4;
 
 let multiBlockGridRow = gridRow / multiBlockSize - 1;
