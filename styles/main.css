@@ -13,7 +13,7 @@ body {
     height: inherit;
     width: inherit;
     display: block;
-    background-color: black;
+    background-color: darkslategrey;
     overflow: auto;
 }
 
@@ -27,8 +27,8 @@ canvas {
     display: block;
     margin: auto;
     margin-top: 1em;
-    width: 65%;
-    height: 65%;
+    width: 60%;
+    height: 60%;
     block-size: auto;
     padding: 3%;
 }
