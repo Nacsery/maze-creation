@@ -10,7 +10,7 @@ let ctx = canvas.getContext('2d');
 let gridMaker = new GridMaker(30);
 let mazeCreator = new MazeCreator();
 let grid = gridMaker.newGrid();
-let multiBlockGrid = new MultiBlockGrid(gridMaker.gridRow, gridMaker.girdColumn,4);
+let multiBlockGrid = new MultiBlockGrid(gridMaker.gridRow, gridMaker.girdColumn, 4);
 let buttonColour = document.getElementById('multi-block').style.background;
 //gets size range element
 document.getElementById('current-height').innerHTML = gridMaker.heightFactor;
@@ -22,6 +22,7 @@ heightInput.oninput = () => {
     gridMaker.gridRow = (gridMaker.height / gridMaker.blockSize) - 1
     document.getElementById('current-height').innerHTML = document.getElementById('height').value;
     reset();
+    grid = gridMaker.newGrid();
 }
 
 //gets size range element
@@ -34,6 +35,7 @@ widthInput.oninput = () => {
     gridMaker.girdColumn = (gridMaker.width / gridMaker.blockSize) - 1
     document.getElementById('current-width').innerHTML = document.getElementById('width').value;
     reset();
+    grid = gridMaker.newGrid();
 }
 
 
@@ -54,29 +56,29 @@ let multiGridInput = document.getElementById('multi-block');
 
 //start and stop functionality for maze
 multiGridInput.onclick = async () => {
-    if(firstStart){
+    if (firstStart) {
         if (multiGrid == true) {
             multiGrid = false;
-            let sizeBlock = multiBlockSize-1;
-            let roundedHeight = (gridMaker.gridRow-1) +  Math.abs(((gridMaker.gridRow-1) % sizeBlock) - sizeBlock) + 1;
-            let roundedWidth = (gridMaker.girdColumn-1) +  Math.abs(((gridMaker.girdColumn-1) % sizeBlock) - sizeBlock) + 1;
-    
+            let sizeBlock = multiBlockSize - 1;
+            let roundedHeight = (gridMaker.gridRow - 1) + Math.abs(((gridMaker.gridRow - 1) % sizeBlock) - sizeBlock) + 1;
+            let roundedWidth = (gridMaker.girdColumn - 1) + Math.abs(((gridMaker.girdColumn - 1) % sizeBlock) - sizeBlock) + 1;
+
             gridMaker.width = canvas.width = roundedWidth * gridMaker.blockSize;
             gridMaker.girdColumn = (gridMaker.width / gridMaker.blockSize) - 1
             document.getElementById('current-width').innerHTML = roundedWidth;
             gridMaker.newGrid();
-    
-            gridMaker.height = canvas.height =roundedHeight * gridMaker.blockSize;
+
+            gridMaker.height = canvas.height = roundedHeight * gridMaker.blockSize;
             gridMaker.gridRow = (gridMaker.height / gridMaker.blockSize) - 1
             document.getElementById('current-height').innerHTML = roundedHeight;
             gridMaker.newGrid();
-    
+
             grid = gridMaker.newGrid();
-            multiBlockGrid.reset(gridMaker.gridRow,gridMaker.girdColumn,multiBlockSize)
-    
+            multiBlockGrid.reset(gridMaker.gridRow, gridMaker.girdColumn, multiBlockSize)
+
             multiBlockGrid.newMultiBlockGrid(grid);
             multiGridInput.value = 'Clear Grid';
-    
+
         } else {
             reset();
         }
@@ -92,60 +94,53 @@ speedInput.oninput = () => {
     mazeCreator.speed = (Number(document.getElementById('speed').value) - 100) * -1;
     document.getElementById('current-speed').innerHTML = document.getElementById('speed').value;
 }
-//if it can be started it executionStatus is true
+
 let stopStart = document.getElementById('stop-start');
 let firstStart = true
-let executionStatus = false;
 
 //start and stop functionality for maze
 stopStart.onclick = async () => {
-    console.log( document.getElementById('multi-block').style.background );
     if (firstStart) {
+
         firstStart = false;
-        mazeCreator.start();
         stopStart.value = 'Stop';
         grid = gridMaker.newGrid();
-        mazeCreator.reset = false;
         document.getElementById('multi-block').style.background = 'grey';
         await mazeCreator.createMaze(grid, gridMaker.blockSize);
-
-        if (mazeCreator.isReset) {
-            mazeCreator.isReset = false;
+        if (mazeCreator.reset) {
+            mazeCreator.reset = false;
             grid = gridMaker.newGrid();
         }
-        mazeCreator.stop();
         stopStart.value = 'Start';
-        executionStatus = true;
 
     } else {
-        if (executionStatus == true) {
+        if (mazeCreator.executionStatus == false) {
             mazeCreator.start();
             stopStart.value = 'Stop';
-            executionStatus = false;
 
         } else {
             mazeCreator.stop();
             stopStart.value = 'Start';
-            executionStatus = true;
         }
     }
 }
 
-const reset = async () => {
-    mazeCreator.restart();
-    mazeCreator.start();
+const reset = () => {
+    let len = mazeCreator.restart();
     multiGrid = true;
     multiGridInput.value = 'Block Grid';
     stopStart.value = 'Start';
     firstStart = true
-    executionStatus = false;
-    grid = gridMaker.newGrid();
     document.getElementById('multi-block').style.background = buttonColour;
+    console.log(len);
+    if(len===0){
+        grid = gridMaker.newGrid();
+    }
 }
 
 //Reset functionality
 //Can be done after simulation ended
 let clear = document.getElementById('reset-button');
-clear.onclick = async () => {
+clear.onclick = () => {
     reset()
 }
