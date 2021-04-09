@@ -1,13 +1,13 @@
 //Author Burak Keser
 
 //Block object for the grid
-export function Block(x, y, color, size,) {
+export default function Block(x, y, color, size, canvas) {
     this.x = x;
     this.y = y;
     this.color = color;
     this.size = size;
     this.visited = false;
-    this.canvas = document.querySelector('canvas');
+    this.canvas = canvas;
     this.ctx = this.canvas.getContext('2d');;
 }
 

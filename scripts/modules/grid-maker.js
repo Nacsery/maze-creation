@@ -2,7 +2,6 @@
 import { Block } from './block.js';
 
 export function GridMaker() {
-
     this.blockSize = 30;
     this.widthFactor = 80;
     this.heightFactor = 45;
